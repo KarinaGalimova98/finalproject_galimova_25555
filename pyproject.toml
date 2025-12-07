@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "finalproject-galimova-25555"
+version = "0.1.0"
+description = "Console currency wallet (exam final project)"
+authors = ["Карина Галимова <karina.galimova.98@mail.ru>"]
+readme = "README.md"
+packages = [{ include = "valutatrade_hub", from = "src" }]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+prettytable = "^3.11.0"
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.0"
+
+[tool.poetry.scripts]
+project = "valutatrade_hub.cli.interface:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W"]
