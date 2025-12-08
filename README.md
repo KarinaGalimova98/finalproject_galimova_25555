@@ -90,3 +90,20 @@ source ~/.bashrc
 make project
 # или
 poetry run project
+
+
+##  Asciinema 
+
+Полный сценарий работы приложения:
+
+- запуск (`make project`)
+- регистрация/вход (`register`, `login`)
+- операции (`buy`, `sell`)
+- портфель (`show-portfolio`)
+- обновление данных (`update-rates`)
+- просмотр курсов (`show-rates`)
+- ошибки и сообщения
+
+ Нажмите для просмотра записи:
+
+[![asciinema](https://asciinema.org/a/hiPXfV0IlAz7MSRDp3wCNuD30.svg)](https://asciinema.org/a/hiPXfV0IlAz7MSRDp3wCNuD30)

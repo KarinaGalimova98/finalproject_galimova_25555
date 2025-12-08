@@ -12,5 +12,12 @@
     "hashed_password": "482ad810e3f247b4a50aa1faf36840c610c497a2d542db70a73654cbbad39099",
     "salt": "VwvYD9w6",
     "registration_date": "2025-12-08T13:31:24.707507"
+  },
+  {
+    "user_id": 3,
+    "username": "karinag",
+    "hashed_password": "163c270be8549265a579ff31562c0424c24484ffdef573238f55a85fb24accbc",
+    "salt": "l3EVhvB0",
+    "registration_date": "2025-12-08T13:38:31.812601"
   }
 ]

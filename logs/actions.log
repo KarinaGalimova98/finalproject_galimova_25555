@@ -43,3 +43,16 @@ INFO 2025-12-08 13:33:12,678 Fetching from ExchangeRate-API...
 INFO 2025-12-08 13:33:13,437 Fetching from ExchangeRate-API OK (2 rates)
 INFO 2025-12-08 13:33:13,438 Writing 5 rates to data/rates.json
 INFO 2025-12-08 13:33:13,438 Update successful.
+INFO 2025-12-08 13:38:31,812 {'action': 'REGISTER', 'username': 'unknown', 'result': 'OK'}
+INFO 2025-12-08 13:39:16,637 {'action': 'LOGIN', 'username': 'unknown', 'result': 'OK'}
+INFO 2025-12-08 13:39:23,385 {'action': 'BUY', 'username': 'karinag', 'result': 'OK', 'currency': 'USD', 'amount': 500.0, 'old_balance': 0.0, 'new_balance': 500.0, 'rate': 1.0, 'base_currency': 'USD', 'estimated_value': 500.0, 'updated_at': datetime.datetime(2025, 12, 8, 13, 39, 23, 385724)}
+INFO 2025-12-08 13:39:29,155 {'action': 'BUY', 'username': 'karinag', 'result': 'OK', 'currency': 'BTC', 'amount': 0.05, 'old_balance': 0.0, 'new_balance': 0.05, 'rate': 91613.0, 'base_currency': 'USD', 'estimated_value': 4580.650000000001, 'updated_at': datetime.datetime(2025, 12, 8, 13, 33, 11, 983269, tzinfo=datetime.timezone.utc)}
+INFO 2025-12-08 13:39:42,995 {'action': 'SELL', 'username': 'karinag', 'result': 'ERROR', 'error_type': 'ValueError', 'error_message': 'Недостаточно средств: доступно 0.0500 BTC, требуется 0.5000 BTC'}
+INFO 2025-12-08 13:39:53,181 {'action': 'SELL', 'username': 'karinag', 'result': 'OK', 'currency': 'BTC', 'amount': 0.02, 'old_balance': 0.05, 'new_balance': 0.030000000000000002, 'rate': 91613.0, 'base_currency': 'USD', 'estimated_revenue': 1832.26, 'updated_at': datetime.datetime(2025, 12, 8, 13, 33, 11, 983269, tzinfo=datetime.timezone.utc)}
+INFO 2025-12-08 13:40:18,410 Starting rates update...
+INFO 2025-12-08 13:40:18,410 Fetching from CoinGecko...
+INFO 2025-12-08 13:40:18,877 Fetching from CoinGecko OK (3 rates)
+INFO 2025-12-08 13:40:18,877 Fetching from ExchangeRate-API...
+INFO 2025-12-08 13:40:19,278 Fetching from ExchangeRate-API OK (2 rates)
+INFO 2025-12-08 13:40:19,279 Writing 5 rates to data/rates.json
+INFO 2025-12-08 13:40:19,279 Update successful.
