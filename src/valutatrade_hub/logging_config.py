@@ -2,9 +2,15 @@ from __future__ import annotations
 
 import logging
 from logging.handlers import RotatingFileHandler
-from pathlib import Path
 
-from .core.constants import LOG_DIR, LOG_FILE, LOG_FORMAT, LOG_LEVEL, LOG_MAX_BYTES, LOG_BACKUP_COUNT
+from .core.constants import (
+    LOG_DIR,
+    LOG_FILE,
+    LOG_FORMAT,
+    LOG_LEVEL,
+    LOG_MAX_BYTES,
+    LOG_BACKUP_COUNT,
+)
 
 
 def configure_logging() -> logging.Logger:

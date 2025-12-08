@@ -4,8 +4,7 @@ import json
 from pathlib import Path
 from typing import Any, List, Dict
 
-from ..core.constants import DATA_DIR, USERS_FILE, PORTFOLIOS_FILE, RATES_FILE
-from ..core.models import User, Portfolio
+from ..core.models import User
 from .settings import SettingsLoader
 
 

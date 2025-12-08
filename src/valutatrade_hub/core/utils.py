@@ -4,19 +4,16 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Tuple
 
 from .constants import (
-    DEFAULT_WALLET_BALANCE,
     FIRST_USER_ID,
-    MIN_TRANSACTION_AMOUNT,
     RATES_SOURCE_NAME,
     RATES_TO_USD,
     SALT_LENGTH,
 )
 from .models import User, Portfolio
-from .exceptions import ApiRequestError, CurrencyNotFoundError
+from .exceptions import ApiRequestError
 from .currencies import get_currency
 from ..infra.database import DatabaseManager
 from ..infra.settings import SettingsLoader
-import json
 import random
 import string
 
