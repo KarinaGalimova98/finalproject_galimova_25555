@@ -1,96 +1,188 @@
 # Final Project — Currency Wallet
 
-Учебный консольный проект по Python, имитирующий работу валютного кошелька с поддержкой фиатных и криптовалют.
+Учебный консольный проект на Python, имитирующий работу валютного кошелька с поддержкой фиатных и криптовалют.
 
 Проект состоит из двух слоёв:
 
-- **Core Service** — управление пользователями, кошельками и портфелями, операция покупки/продажи, работа с локальным кэшем курсов (`data/rates.json`).
+- **Core Service** — управление пользователями, кошельками и портфелями, операции покупки/продажи, работа с локальным кешем курсов (`data/rates.json`).
 - **Parser Service** — отдельный сервис, который обращается к внешним API (CoinGecko и ExchangeRate-API), обновляет курсы и ведёт историю в `data/exchange_rates.json`.
 
-Структура проекта
+---
 
+## Структура проекта
+
+```text
 finalproject_galimova_25555/
+│
 ├── data/
-│   ├── users.json             # пользователи
-│   ├── portfolios.json        # портфели и кошельки
-│   ├── rates.json             # актуальный кэш курсов для Core Service
-│   └── exchange_rates.json    # история обновлений Parser Service
+│   ├── users.json              # пользователи
+│   ├── portfolios.json         # портфели и кошельки
+│   ├── rates.json              # актуальный кеш курсов для Core Service
+│   └── exchange_rates.json     # история обновлений Parser Service
+│
 ├── src/
 │   └── valutatrade_hub/
 │       ├── __init__.py
-│       ├── logging_config.py  # настройка логирования и ротации
-│       ├── decorators.py      # @log_action для доменных операций
+│       ├── logging_config.py       # настройка логирования и ротации
+│       ├── decorators.py           # @log_action для доменных операций
+│
 │       ├── core/
 │       │   ├── __init__.py
-│       │   ├── constants.py   # константы и пути к файлам
-│       │   ├── currencies.py  # иерархия Currency / FiatCurrency / CryptoCurrency
-│       │   ├── exceptions.py  # доменные исключения
-│       │   ├── models.py      # User, Wallet, Portfolio
-│       │   ├── usecases.py    # бизнес-логика (register/login/buy/sell/get_rate)
-│       │   └── utils.py       # работа с кэшем курсов
+│       │   ├── constants.py        # константы и пути к файлам
+│       │   ├── currencies.py       # иерархия Currency / FiatCurrency / CryptoCurrency
+│       │   ├── exceptions.py       # доменные исключения
+│       │   ├── models.py           # User, Wallet, Portfolio
+│       │   ├── usecases.py         # бизнес-логика (register/login/buy/sell/get_rate)
+│       │   └── utils.py            # работа с кешем курсов
+│
 │       ├── infra/
 │       │   ├── __init__.py
-│       │   ├── settings.py    # Singleton SettingsLoader
-│       │   └── database.py    # Singleton DatabaseManager над JSON-хранилищем
+│       │   ├── settings.py         # Singleton SettingsLoader
+│       │   └── database.py         # Singleton DatabaseManager над JSON-хранилищем
+│
 │       ├── parser_service/
 │       │   ├── __init__.py
-│       │   ├── config.py      # ParserConfig: API-ключи, URL, списки валют
-│       │   ├── storage.py     # работа с rates.json и exchange_rates.json
-│       │   ├── api_clients.py # CoinGeckoClient и ExchangeRateApiClient
-│       │   └── updater.py     # RatesUpdater: запускает обновление курсов
+│       │   ├── config.py           # ParserConfig: API-ключи, URL, списки валют
+│       │   ├── api_clients.py      # CoinGeckoClient и ExchangeRateApiClient
+│       │   ├── updater.py          # RatesUpdater: запускает обновление курсов
+│       │   └── storage.py          # работа с rates.json и exchange_rates.json
+│
 │       └── cli/
 │           ├── __init__.py
-│           └── interface.py   # консольный интерфейс пользователя
-├── main.py                    # точка входа (скрипт project)
+│           └── interface.py        # консольный интерфейс пользователя
+│
+├── main.py                         # точка входа (скрипт project)
 ├── Makefile
 ├── pyproject.toml
 ├── poetry.lock
 └── README.md
+```
 
-Установка
+---
+
+# Установка
 
 Требуется Python 3.11+ и Poetry.
 
-# Клонирование репозитория
+## Клонирование репозитория
+
+```bash
 git clone <URL_репозитория>
 cd finalproject_galimova_25555
+```
 
-# Установка зависимостей
+## Установка зависимостей
+
+```bash
 make install
 # или
 poetry install
+```
 
-Проверка стиля кода:
+## Проверка стиля кода
 
+```bash
 make lint
 # или
 poetry run ruff check .
+```
 
-Переменные окружения
+---
+
+# Переменные окружения
 
 Для работы с фиатными курсами (ExchangeRate-API) требуется API-ключ.
 
-Зарегистрироваться на https://www.exchangerate-api.com/
-.
+1. Зарегистрироваться: https://www.exchangerate-api.com/
+2. Получить ключ вида:
 
-Получить ключ вида xxxxxxxxxxxxxxxxxxxxxx.
+```
+xxxxxxxxxxxxxxxxxxxxxxx
+```
 
-Установить переменную окружения, например:
+3. Установить:
 
-export EXCHANGERATE_API_KEY="ваш_ключ"
+```bash
+export EXCHANGERATE_API_KEY="xxxxxxxxxxxxxxxxxxxxxxx"
+```
 
-Для постоянной настройки можно добавить строку в ~/.bashrc:
-echo 'export EXCHANGERATE_API_KEY="ваш_ключ"' >> ~/.bashrc
-source ~/.bashrc
+---
 
+# Запуск проекта
 
-
-Запуск приложения
-
+```bash
 make project
 # или
 poetry run project
+```
 
+---
+
+# Основные команды
+
+## Регистрация и вход
+
+```bash
+register --username alice --password secret
+login --username alice --password secret
+```
+
+## Портфель
+
+```bash
+show-portfolio
+```
+
+## Покупка / продажа валюты
+
+```bash
+buy --currency BTC --amount 0.05
+sell --currency BTC --amount 0.02
+```
+
+## Курсы валют
+
+```bash
+get-rate --from BTC --to USD
+```
+
+---
+
+# Обновление курсов
+
+## Вручную
+
+```bash
+update-rates
+```
+
+## Пример вывода
+
+```
+INFO: Starting rates update...
+INFO: Fetching from CoinGecko... OK (3 rates)
+INFO: Fetching from ExchangeRate-API... OK (3 rates)
+INFO: Writing 6 rates to data/rates.json...
+Update successful.
+```
+
+---
+
+# Просмотр курсов
+
+```bash
+show-rates --top 2
+```
+
+Пример вывода:
+
+```
+Rates from cache (updated at 2025-12-08T12:52:32):
+- BTC_USD: 91804.0
+- ETH_USD: 3125.38
+```
+
+---
 
 ##  Asciinema 
 
