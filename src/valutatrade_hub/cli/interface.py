@@ -5,9 +5,14 @@ from typing import Dict, List, Optional
 
 from prettytable import PrettyTable
 
-from ..core.constants import DEFAULT_BASE_CURRENCY
+from ..core.constants import DEFAULT_BASE_CURRENCY, CURRENCY_REGISTRY
 from ..core.models import User
 from ..core import usecases
+from ..core.exceptions import (
+    InsufficientFundsError,
+    CurrencyNotFoundError,
+    ApiRequestError,
+)
 
 
 def _parse_args(tokens: List[str]) -> Dict[str, str]:
@@ -35,7 +40,6 @@ def _require_logged_in(current_user: Optional[User]) -> User:
 
 def main() -> None:
     """Главная точка входа CLI."""
-    print("ValutaTrade Hub CLI")
     print("ValutaTrade Hub CLI")
     print(
         "Доступные команды: register, login, show-portfolio, "
@@ -77,7 +81,10 @@ def main() -> None:
                 continue
 
             try:
-                user = usecases.register_user(username=username, password=password)
+                user = usecases.register_user(
+                    username=username,
+                    password=password,
+                )
             except ValueError as exc:
                 print(exc)
                 continue
@@ -114,7 +121,10 @@ def main() -> None:
             base = args.get("base", DEFAULT_BASE_CURRENCY)
 
             try:
-                summary = usecases.get_portfolio_summary(user=user, base_currency=base)
+                summary = usecases.get_portfolio_summary(
+                    user=user,
+                    base_currency=base,
+                )
             except ValueError as exc:
                 print(exc)
                 continue
@@ -125,7 +135,11 @@ def main() -> None:
             )
 
             table = PrettyTable()
-            table.field_names = ["Валюта", "Баланс", f"В {summary['base_currency']}"]
+            table.field_names = [
+                "Валюта",
+                "Баланс",
+                f"В {summary['base_currency']}",
+            ]
 
             for item in summary["items"]:
                 table.add_row(
@@ -170,6 +184,18 @@ def main() -> None:
                     currency_code=currency,
                     amount=amount,
                 )
+            except CurrencyNotFoundError as exc:
+                print(exc)
+                print(
+                    "Используйте команду get-rate для проверки доступных валют."
+                )
+                continue
+            except ApiRequestError as exc:
+                print(exc)
+                print(
+                    "Повторите попытку позже или проверьте подключение."
+                )
+                continue
             except ValueError as exc:
                 print(exc)
                 continue
@@ -185,7 +211,7 @@ def main() -> None:
                 f"→ стало {result['new_balance']:.4f}"
             )
             print(
-                f"Оценочная стоимость покупки: "
+                "Оценочная стоимость покупки: "
                 f"{result['estimated_value']:.2f} {result['base_currency']}"
             )
 
@@ -217,6 +243,21 @@ def main() -> None:
                     currency_code=currency,
                     amount=amount,
                 )
+            except InsufficientFundsError as exc:
+                print(exc)
+                continue
+            except CurrencyNotFoundError as exc:
+                print(exc)
+                print(
+                    "Используйте команду get-rate для проверки доступных валют."
+                )
+                continue
+            except ApiRequestError as exc:
+                print(exc)
+                print(
+                    "Повторите попытку позже или проверьте подключение."
+                )
+                continue
             except ValueError as exc:
                 print(exc)
                 continue
@@ -232,7 +273,7 @@ def main() -> None:
                 f"→ стало {result['new_balance']:.4f}"
             )
             print(
-                f"Оценочная выручка: "
+                "Оценочная выручка: "
                 f"{result['estimated_revenue']:.2f} {result['base_currency']}"
             )
 
@@ -251,8 +292,18 @@ def main() -> None:
                     from_currency=from_currency,
                     to_currency=to_currency,
                 )
-            except ValueError as exc:
+            except CurrencyNotFoundError as exc:
                 print(exc)
+                print(
+                    "Доступные коды:",
+                    ", ".join(sorted(CURRENCY_REGISTRY.keys())),
+                )
+                continue
+            except ApiRequestError as exc:
+                print(exc)
+                print(
+                    "Повторите попытку позже или проверьте подключение."
+                )
                 continue
 
             updated_at = info["updated_at"].strftime("%Y-%m-%d %H:%M:%S")
@@ -261,8 +312,8 @@ def main() -> None:
                 f"(обновлено: {updated_at})"
             )
             print(
-                f"Обратный курс {info['to']}→{info['from']}: "
-                f"{info['reverse_rate']:.8f}"
+                "Обратный курс "
+                f"{info['to']}→{info['from']}: {info['reverse_rate']:.8f}"
             )
 
         else:

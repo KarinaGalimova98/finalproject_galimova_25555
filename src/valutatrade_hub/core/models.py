@@ -1,4 +1,5 @@
 from __future__ import annotations
+from .exceptions import InsufficientFundsError
 
 import hashlib
 from datetime import datetime
@@ -133,7 +134,11 @@ class Wallet:
         if amount <= MIN_TRANSACTION_AMOUNT:
             raise ValueError("Сумма снятия должна быть положительной.")
         if amount > self._balance:
-            raise ValueError("Недостаточно средств на балансе.")
+            raise InsufficientFundsError(
+                available=self._balance,
+                required=amount,
+                code=self.currency_code,
+            )
         self._balance -= float(amount)
 
     def get_balance_info(self) -> dict:

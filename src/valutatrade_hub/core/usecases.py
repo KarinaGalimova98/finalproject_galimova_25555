@@ -1,4 +1,7 @@
 from __future__ import annotations
+from .exceptions import InsufficientFundsError, CurrencyNotFoundError, ApiRequestError
+from .currencies import get_currency
+from ..decorators import log_action
 
 from datetime import datetime
 from typing import Dict, List
@@ -22,7 +25,7 @@ from .utils import (
 
 # ===== Пользователи =====
 
-
+@log_action("REGISTER", verbose=False)
 def register_user(username: str, password: str) -> User:
     username = username.strip()
     if not username:
@@ -61,7 +64,7 @@ def register_user(username: str, password: str) -> User:
 
     return new_user
 
-
+@log_action("LOGIN", verbose=False)
 def login_user(username: str, password: str) -> User:
     username = username.strip()
     users = load_users()
@@ -119,7 +122,7 @@ def get_portfolio_summary(
 
 # ===== Операции buy / sell =====
 
-
+@log_action("BUY", verbose=True)
 def buy_currency(
     user: User,
     currency_code: str,
@@ -128,7 +131,7 @@ def buy_currency(
 ) -> Dict:
     if amount <= 0:
         raise ValueError("'amount' должен быть положительным числом.")
-
+    get_currency(currency_code)
     portfolio = load_portfolio_for_user(user)
     code = currency_code.upper()
 
@@ -159,7 +162,7 @@ def buy_currency(
         "updated_at": updated_at,
     }
 
-
+@log_action("SELL", verbose=True)
 def sell_currency(
     user: User,
     currency_code: str,
@@ -168,7 +171,7 @@ def sell_currency(
 ) -> Dict:
     if amount <= 0:
         raise ValueError("'amount' должен быть положительным числом.")
-
+    get_currency(currency_code)
     portfolio = load_portfolio_for_user(user)
     code = currency_code.upper()
 
