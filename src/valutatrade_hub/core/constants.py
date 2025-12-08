@@ -14,6 +14,7 @@ LOG_DIR = BASE_DIR / "logs"
 USERS_FILE = DATA_DIR / "users.json"
 PORTFOLIOS_FILE = DATA_DIR / "portfolios.json"
 RATES_FILE = DATA_DIR / "rates.json"
+EXCHANGE_RATES_HISTORY_FILE = DATA_DIR / "exchange_rates.json"
 
 # ===== Пользователи =====
 
@@ -30,6 +31,7 @@ RATES_TO_USD: Dict[str, float] = {
     "EUR": 1.1,
     "BTC": 60_000.0,
     "ETH": 3_000.0,
+    "RUB": 0.01016,
 }
 
 DEFAULT_WALLET_BALANCE = 0.0

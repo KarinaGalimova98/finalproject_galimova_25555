@@ -19,6 +19,7 @@ class SettingsData:
     log_backup_count: int
     rates_ttl_seconds: int
     default_base_currency: str
+    history_file: str          # ← вот это поле
 
 
 class SettingsLoader:
@@ -48,6 +49,7 @@ class SettingsLoader:
             log_backup_count=constants.LOG_BACKUP_COUNT,
             rates_ttl_seconds=constants.RATE_FRESHNESS_SECONDS,
             default_base_currency=constants.DEFAULT_BASE_CURRENCY,
+            history_file=str(constants.EXCHANGE_RATES_HISTORY_FILE),  # ← добавили
         )
 
     def get(self, key: str, default: Any | None = None) -> Any:

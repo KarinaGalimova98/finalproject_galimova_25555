@@ -14,6 +14,9 @@ from ..core.exceptions import (
     ApiRequestError,
 )
 
+from ..parser_service.config import ParserConfig
+from ..parser_service.updater import RatesUpdater
+from ..parser_service.storage import RatesStorage
 
 def _parse_args(tokens: List[str]) -> Dict[str, str]:
     """Примитивный парсер флагов вида --key value."""
@@ -316,9 +319,95 @@ def main() -> None:
                 f"{info['to']}→{info['from']}: {info['reverse_rate']:.8f}"
             )
 
-        else:
-            print(f"Неизвестная команда: {command}")
+        elif command == "update-rates":
+            source_filter = args.get("source")
+            if source_filter:
+                source_filter = source_filter.lower()
+
+            config = ParserConfig.from_env()
+            updater = RatesUpdater(config)
+
+            try:
+                result = updater.run_update(source_filter=source_filter)
+            except ApiRequestError as exc:
+                print(exc)
+                print(
+                    "Обновление курсов завершилось с ошибкой. "
+                    "Проверьте подключение или API-ключ."
+                )
+                continue
+
+            total = result["total_rates"]
+            last_refresh = result["last_refresh"].isoformat()
+            errors = result["errors"]
+
+            if errors:
+                print(
+                    "Update completed with errors. "
+                    "Check logs/actions.log for details."
+                )
+            else:
+                print(
+                    f"Update successful. Total rates updated: {total}. "
+                    f"Last refresh: {last_refresh}"
+                )
+
+        elif command == "show-rates":
+            config = ParserConfig.from_env()
+            storage = RatesStorage(config)
+            data = storage.load_current_rates()
+
+            if not data:
+                print(
+                    "Локальный кеш курсов пуст. "
+                    "Выполните 'update-rates', чтобы загрузить данные."
+                )
+                continue
+
+            # top-level format: pair keys + last_refresh
+            last_refresh = data.get("last_refresh")
+            pairs = {
+                key: value
+                for key, value in data.items()
+                if key != "last_refresh"
+            }
+
+            currency_filter = args.get("currency")
+            top_str = args.get("top")
+
+            if currency_filter:
+                currency_filter = currency_filter.upper()
+                filtered = {
+                    k: v
+                    for k, v in pairs.items()
+                    if k.startswith(currency_filter + "_")
+                }
+                pairs = filtered
+
+                if not pairs:
+                    print(
+                        f"Курс для '{currency_filter}' не найден в кеше."
+                    )
+                    continue
+
+            if top_str:
+                try:
+                    top_n = int(top_str)
+                except ValueError:
+                    print("'top' должен быть целым числом.")
+                    continue
+                # сортируем по убыванию курса
+                sorted_pairs = sorted(
+                    pairs.items(),
+                    key=lambda item: item[1]["rate"],
+                    reverse=True,
+                )
+                pairs = dict(sorted_pairs[:top_n])
+
             print(
-                "Команды: register, login, show-portfolio, "
-                "buy, sell, get-rate, exit"
+                "Rates from cache"
+                + (f" (updated at {last_refresh})" if last_refresh else "")
+                + ":"
             )
+            for pair_key, info in sorted(pairs.items()):
+                print(f"- {pair_key}: {info['rate']}")
