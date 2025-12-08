@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Tuple
 
 from .constants import (
@@ -86,12 +86,54 @@ def save_rates(data: Dict[str, Any]) -> None:
     data["last_refresh"] = now
     db.save_rates_raw(data)
 
+def _is_rate_fresh(updated_at_str: str) -> bool:
+    """Проверить, не устарел ли курс (по TTL из настроек).
+
+    Если TTL не задан или имеет некорректный тип, считаем курс свежим.
+    """
+    settings = SettingsLoader()
+    ttl_seconds = settings.get("RATES_TTL_SECONDS")
+
+    # Если TTL не задан или задан неверно — не ломаемся
+    if not isinstance(ttl_seconds, (int, float)):
+        return True
+
+    try:
+        updated_at = _parse_iso_datetime(updated_at_str)
+    except ValueError:
+        # если формат даты непонятный — считаем курс устаревшим
+        return False
+
+    now = datetime.now(timezone.utc)
+    age = now - updated_at
+    return age.total_seconds() <= float(ttl_seconds)
+
+
+def _parse_iso_datetime(value: str) -> datetime:
+    """Разобрать ISO-дату из JSON и привести к UTC-aware datetime."""
+    # поддерживаем варианты с 'Z' на конце и с явным +00:00
+    cleaned = value.replace("Z", "+00:00")
+    dt = datetime.fromisoformat(cleaned)
+    if dt.tzinfo is None:
+        # делаем явный UTC, чтобы не было naive/aware-конфликта
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
+
 
 def _is_rate_fresh(updated_at_str: str) -> bool:
-    ttl = settings.get("rates_ttl_seconds")
-    updated_at = datetime.fromisoformat(updated_at_str)
-    age = datetime.utcnow() - updated_at
-    return age <= timedelta(seconds=ttl)
+    """Проверить, не устарел ли курс (по TTL из настроек)."""
+    settings = SettingsLoader()
+    ttl_seconds = settings.get("RATES_TTL_SECONDS")
+
+    try:
+        updated_at = _parse_iso_datetime(updated_at_str)
+    except ValueError:
+        # если формат непонятный — считаем курс устаревшим
+        return False
+
+    now = datetime.now(timezone.utc)
+    age = now - updated_at
+    return age.total_seconds() <= ttl_seconds
 
 
 def get_rate(from_currency: str, to_currency: str) -> Tuple[float, datetime]:
@@ -130,3 +172,36 @@ def get_rate(from_currency: str, to_currency: str) -> Tuple[float, datetime]:
     save_rates(rates_data)
 
     return rate, now
+# ==== Вспомогательные функции для проверки свежести курса ====
+
+def _parse_iso_datetime(value: str) -> datetime:
+    """Разобрать ISO-дату из JSON и привести к UTC-aware datetime."""
+    cleaned = value.replace("Z", "+00:00")
+    dt = datetime.fromisoformat(cleaned)
+    if dt.tzinfo is None:
+        dt = dt.replace(tzinfo=timezone.utc)
+    return dt
+
+
+def _is_rate_fresh(updated_at_str: str) -> bool:
+    """Проверить, не устарел ли курс (по TTL из настроек).
+
+    Если TTL не задан или задан некорректно, считаем курс свежим,
+    чтобы не ломать бизнес-логику.
+    """
+    settings = SettingsLoader()
+    ttl_seconds = settings.get("RATES_TTL_SECONDS")
+
+    # Если TTL нет или он странный — не сравниваем с None
+    if not isinstance(ttl_seconds, (int, float)):
+        return True
+
+    try:
+        updated_at = _parse_iso_datetime(updated_at_str)
+    except Exception:
+        # кривая дата → считаем курс устаревшим
+        return False
+
+    now = datetime.now(timezone.utc)
+    age = now - updated_at
+    return age.total_seconds() <= float(ttl_seconds)

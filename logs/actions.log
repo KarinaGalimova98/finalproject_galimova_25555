@@ -19,3 +19,27 @@ INFO 2025-12-08 13:04:06,937 Fetching from ExchangeRate-API...
 INFO 2025-12-08 13:04:07,374 Fetching from ExchangeRate-API OK (2 rates)
 INFO 2025-12-08 13:04:07,375 Writing 5 rates to data/rates.json
 INFO 2025-12-08 13:04:07,375 Update successful.
+INFO 2025-12-08 13:17:23,538 {'action': 'REGISTER', 'username': 'unknown', 'result': 'ERROR', 'error_type': 'ValueError', 'error_message': "Имя пользователя 'alice' уже занято."}
+INFO 2025-12-08 13:17:33,071 {'action': 'LOGIN', 'username': 'unknown', 'result': 'OK'}
+INFO 2025-12-08 13:17:40,410 {'action': 'BUY', 'username': 'alice', 'result': 'OK', 'currency': 'USD', 'amount': 500.0, 'old_balance': 0.0, 'new_balance': 500.0, 'rate': 1.0, 'base_currency': 'USD', 'estimated_value': 500.0, 'updated_at': datetime.datetime(2025, 12, 8, 13, 17, 40, 410292)}
+INFO 2025-12-08 13:17:48,844 {'action': 'BUY', 'username': 'alice', 'result': 'ERROR', 'error_type': 'TypeError', 'error_message': "can't subtract offset-naive and offset-aware datetimes"}
+INFO 2025-12-08 13:21:30,933 {'action': 'LOGIN', 'username': 'unknown', 'result': 'OK'}
+INFO 2025-12-08 13:21:49,332 {'action': 'BUY', 'username': 'alice', 'result': 'OK', 'currency': 'USD', 'amount': 500.0, 'old_balance': 500.0, 'new_balance': 1000.0, 'rate': 1.0, 'base_currency': 'USD', 'estimated_value': 500.0, 'updated_at': datetime.datetime(2025, 12, 8, 13, 21, 49, 332708)}
+INFO 2025-12-08 13:22:00,604 {'action': 'BUY', 'username': 'alice', 'result': 'ERROR', 'error_type': 'TypeError', 'error_message': "'<=' not supported between instances of 'float' and 'NoneType'"}
+INFO 2025-12-08 13:25:55,152 {'action': 'LOGIN', 'username': 'unknown', 'result': 'OK'}
+INFO 2025-12-08 13:26:02,481 {'action': 'BUY', 'username': 'alice', 'result': 'ERROR', 'error_type': 'TypeError', 'error_message': "'<=' not supported between instances of 'float' and 'NoneType'"}
+INFO 2025-12-08 13:29:09,007 {'action': 'LOGIN', 'username': 'unknown', 'result': 'OK'}
+INFO 2025-12-08 13:29:19,270 {'action': 'BUY', 'username': 'alice', 'result': 'OK', 'currency': 'BTC', 'amount': 0.05, 'old_balance': 0.04, 'new_balance': 0.09, 'rate': 91784.0, 'base_currency': 'USD', 'estimated_value': 4589.2, 'updated_at': datetime.datetime(2025, 12, 8, 13, 4, 4, 101674, tzinfo=datetime.timezone.utc)}
+INFO 2025-12-08 13:31:24,707 {'action': 'REGISTER', 'username': 'unknown', 'result': 'OK'}
+INFO 2025-12-08 13:31:50,846 {'action': 'LOGIN', 'username': 'unknown', 'result': 'OK'}
+INFO 2025-12-08 13:32:02,250 {'action': 'BUY', 'username': 'karina', 'result': 'OK', 'currency': 'USD', 'amount': 500.0, 'old_balance': 0.0, 'new_balance': 500.0, 'rate': 1.0, 'base_currency': 'USD', 'estimated_value': 500.0, 'updated_at': datetime.datetime(2025, 12, 8, 13, 32, 2, 250640)}
+INFO 2025-12-08 13:32:09,176 {'action': 'BUY', 'username': 'karina', 'result': 'OK', 'currency': 'BTC', 'amount': 0.05, 'old_balance': 0.0, 'new_balance': 0.05, 'rate': 91784.0, 'base_currency': 'USD', 'estimated_value': 4589.2, 'updated_at': datetime.datetime(2025, 12, 8, 13, 4, 4, 101674, tzinfo=datetime.timezone.utc)}
+INFO 2025-12-08 13:32:26,538 {'action': 'SELL', 'username': 'karina', 'result': 'ERROR', 'error_type': 'ValueError', 'error_message': 'Недостаточно средств: доступно 0.0500 BTC, требуется 0.5000 BTC'}
+INFO 2025-12-08 13:32:39,466 {'action': 'SELL', 'username': 'karina', 'result': 'OK', 'currency': 'BTC', 'amount': 0.01, 'old_balance': 0.05, 'new_balance': 0.04, 'rate': 91784.0, 'base_currency': 'USD', 'estimated_revenue': 917.84, 'updated_at': datetime.datetime(2025, 12, 8, 13, 4, 4, 101674, tzinfo=datetime.timezone.utc)}
+INFO 2025-12-08 13:33:11,983 Starting rates update...
+INFO 2025-12-08 13:33:11,983 Fetching from CoinGecko...
+INFO 2025-12-08 13:33:12,678 Fetching from CoinGecko OK (3 rates)
+INFO 2025-12-08 13:33:12,678 Fetching from ExchangeRate-API...
+INFO 2025-12-08 13:33:13,437 Fetching from ExchangeRate-API OK (2 rates)
+INFO 2025-12-08 13:33:13,438 Writing 5 rates to data/rates.json
+INFO 2025-12-08 13:33:13,438 Update successful.

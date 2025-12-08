@@ -157,5 +157,80 @@
       "etag": "",
       "used_fallback": true
     }
+  },
+  {
+    "id": "BTC_USD_2025-12-08T13:33:11.983269+00:00",
+    "from_currency": "BTC",
+    "to_currency": "USD",
+    "rate": 91613.0,
+    "timestamp": "2025-12-08T13:33:11.983269+00:00",
+    "source": "CoinGecko",
+    "meta": {
+      "raw_id": "bitcoin",
+      "request_ms": 694,
+      "status_code": 200,
+      "etag": "W/\"624f05be5e62805acd401acaf3f53a35\"",
+      "used_fallback": false
+    }
+  },
+  {
+    "id": "ETH_USD_2025-12-08T13:33:11.983269+00:00",
+    "from_currency": "ETH",
+    "to_currency": "USD",
+    "rate": 3141.69,
+    "timestamp": "2025-12-08T13:33:11.983269+00:00",
+    "source": "CoinGecko",
+    "meta": {
+      "raw_id": "ethereum",
+      "request_ms": 694,
+      "status_code": 200,
+      "etag": "W/\"624f05be5e62805acd401acaf3f53a35\"",
+      "used_fallback": false
+    }
+  },
+  {
+    "id": "SOL_USD_2025-12-08T13:33:11.983269+00:00",
+    "from_currency": "SOL",
+    "to_currency": "USD",
+    "rate": 138.25,
+    "timestamp": "2025-12-08T13:33:11.983269+00:00",
+    "source": "CoinGecko",
+    "meta": {
+      "raw_id": "solana",
+      "request_ms": 694,
+      "status_code": 200,
+      "etag": "W/\"624f05be5e62805acd401acaf3f53a35\"",
+      "used_fallback": false
+    }
+  },
+  {
+    "id": "EUR_USD_2025-12-08T13:33:11.983269+00:00",
+    "from_currency": "EUR",
+    "to_currency": "USD",
+    "rate": 1.1,
+    "timestamp": "2025-12-08T13:33:11.983269+00:00",
+    "source": "ExchangeRate-API",
+    "meta": {
+      "raw_id": "EUR",
+      "request_ms": 758,
+      "status_code": 200,
+      "etag": "",
+      "used_fallback": true
+    }
+  },
+  {
+    "id": "RUB_USD_2025-12-08T13:33:11.983269+00:00",
+    "from_currency": "RUB",
+    "to_currency": "USD",
+    "rate": 0.01016,
+    "timestamp": "2025-12-08T13:33:11.983269+00:00",
+    "source": "ExchangeRate-API",
+    "meta": {
+      "raw_id": "RUB",
+      "request_ms": 758,
+      "status_code": 200,
+      "etag": "",
+      "used_fallback": true
+    }
   }
 ]
